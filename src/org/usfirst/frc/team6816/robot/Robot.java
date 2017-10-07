@@ -17,6 +17,7 @@ public class Robot extends IterativeRobot {
 	// all our state variables
 	private boolean intakeCurrentlyPressed = false;
 	private boolean ejectCurrentlyPressed = false;
+	private boolean manualSolenoidCurrentlyPressed = false;
 
 	// all our objects
 	CANTalon talon11, talon12, talon13, talon14, talon15, talon16, talon17, talon18;
@@ -103,6 +104,24 @@ public class Robot extends IterativeRobot {
 
 		// gear pickup
 		gearPickup.CheckPeriodic();
+		
+		
+		//manual overrides
+		if (rightStick.getRawButton(Manual_Motor_Forward)) {
+			gearPickup.ManualMotorForward();
+		}
+		
+		if (rightStick.getRawButton(Manual_Motor_Backward)) {
+			gearPickup.ManualMotorBackward();
+		}
+		
+		if (rightStick.getRawButton(Manual_Solenoid) && !manualSolenoidCurrentlyPressed) {
+			gearPickup.ManualSolenoid();
+			manualSolenoidCurrentlyPressed = true;
+		}
+		else if (!rightStick.getRawButton(Manual_Solenoid)) {
+			manualSolenoidCurrentlyPressed = false;
+		}
 
 		// climber
 		if (xboxStick.getRawButton(Climber_Button)) {

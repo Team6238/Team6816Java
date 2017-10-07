@@ -10,6 +10,7 @@ public class RollerGearPickup {
 	Timer timer;
 	int machineState; // 0 = neutral, 1 = intake, 2 = eject
 	DigitalInput limitSwitch;
+	boolean solenoidState = true;
 
 	public RollerGearPickup(Solenoid newSolenoid, CANTalon newTalon) {
 		solenoid = newSolenoid;
@@ -40,6 +41,19 @@ public class RollerGearPickup {
 		machineState = 2;
 		timer.reset();
 		timer.start();
+	}
+	
+	public void ManualMotorForward() {
+		talon.set(0.5);
+	}
+	
+	public void ManualMotorBackward() {
+		talon.set(-0.5);
+	}
+	
+	public void ManualSolenoid() {
+		solenoidState = !solenoidState;
+		solenoid.set(solenoidState);
 	}
 
 	// intake handler; run talon forward until limit switch activated, then raise
